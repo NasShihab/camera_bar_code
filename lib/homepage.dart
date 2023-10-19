@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:camera_bar_code/second_page.dart';
+import 'package:camera_bar_code/qr_code_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -45,9 +45,16 @@ class _HomePageState extends State<HomePage> {
               ),
               Center(
                 child: ElevatedButton(
-                  onPressed: (){
+                  onPressed: () {},
+                  child: const Text("2nd"),
+                ),
+              ),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const QQrCodeScanView()));
                   },
-                  child: const Text(" Image from Camera"),
+                  child: const Text("3rd"),
                 ),
               ),
             ],
