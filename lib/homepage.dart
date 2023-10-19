@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:camera_bar_code/second_page.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -37,10 +38,18 @@ class _HomePageState extends State<HomePage> {
                   _pickedImage!,
                 ),
               Center(
-                  child: ElevatedButton(
-                onPressed: _pickImageFromCamera,
-                child: const Text("Pick Image from Camera"),
-              ))
+                child: ElevatedButton(
+                  onPressed: _pickImageFromCamera,
+                  child: const Text("Pick Image from Camera"),
+                ),
+              ),
+              Center(
+                child: ElevatedButton(
+                  onPressed: (){
+                  },
+                  child: const Text(" Image from Camera"),
+                ),
+              ),
             ],
           ),
         ),
