@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:camera_bar_code/qr_code_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -52,10 +51,20 @@ class _HomePageState extends State<HomePage> {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const QQrCodeScanView()));
+                    // Navigator.push(context, MaterialPageRoute(builder: (context) => const QQrCodeScanView()));
                   },
                   child: const Text("3rd"),
                 ),
+
+              ),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Navigator.push(context, MaterialPageRoute(builder: (context) => const QQrCodeScanView()));
+                  },
+                  child: const Text("qrcode_flutter"),
+                ),
+
               ),
             ],
           ),
