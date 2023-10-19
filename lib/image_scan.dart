@@ -15,8 +15,8 @@ class _CaptureThenScanState extends State<CaptureThenScan> {
   var selectedImagePath = '';
   var extractedBarcode = '';
 
-  getImage() async {
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+  getImage(ImageSource imageSource) async {
+    final pickedFile = await ImagePicker().pickImage(source: imageSource);
     if (pickedFile != null) {
       setState(() {
         selectedImagePath = pickedFile.path;
@@ -67,16 +67,28 @@ class _CaptureThenScanState extends State<CaptureThenScan> {
                     height: 400,
                     width: 200,
                   ),
+            SizedBox(height: 30),
             Row(
               children: [
                 Expanded(
-                  child: ElevatedButton(
-                      onPressed: () {
-                        getImage();
-                      },
-                      child: const Text('Pick Image')),
+                  child: Column(
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          getImage(ImageSource.gallery);
+                        },
+                        child: const Text('Pick Image'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          getImage(ImageSource.camera);
+                        },
+                        child: const Text('Camera Capture'),
+                      ),
+                    ],
+                  ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 20,
                 ),
                 Expanded(
@@ -88,6 +100,7 @@ class _CaptureThenScanState extends State<CaptureThenScan> {
                 ),
               ],
             ),
+            SizedBox(height: 30),
             extractedBarcode.isEmpty ? Text("No data found in barcode") : Text(extractedBarcode)
           ],
         ),
