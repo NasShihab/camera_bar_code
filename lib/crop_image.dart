@@ -35,7 +35,9 @@ class _CropImageState extends State<CropImage> {
         CropAspectRatioPreset.ratio3x2,
         CropAspectRatioPreset.original,
         CropAspectRatioPreset.ratio4x3,
-        CropAspectRatioPreset.ratio16x9
+        CropAspectRatioPreset.ratio16x9,
+        CropAspectRatioPreset.ratio5x3,
+        CropAspectRatioPreset.ratio7x5,
       ], uiSettings: [
         AndroidUiSettings(
             toolbarTitle: 'Crop',
