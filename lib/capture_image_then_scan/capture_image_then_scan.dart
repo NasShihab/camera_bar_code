@@ -1,8 +1,9 @@
 import 'dart:io';
-
+import 'package:camera_bar_code/capture_image_then_scan/provider_capture_image_then_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class CaptureThenScan extends StatefulWidget {
   const CaptureThenScan({super.key});
@@ -12,46 +13,12 @@ class CaptureThenScan extends StatefulWidget {
 }
 
 class _CaptureThenScanState extends State<CaptureThenScan> {
-  var selectedImagePath = '';
-  var extractedBarcode = '';
 
-  getImage(ImageSource imageSource) async {
-    final pickedFile = await ImagePicker().pickImage(source: imageSource);
-    if (pickedFile != null) {
-      setState(() {
-        selectedImagePath = pickedFile.path;
-      });
-    } else {
-      debugPrint("Error 1");
-    }
-  }
-
-  ///recognise image text method
-  Future<void> recognizedText(String pickedImage) async {
-    if (pickedImage == null) {
-      debugPrint("Error 2");
-    } else {
-      setState(() {
-        extractedBarcode = '';
-      });
-      var barCodeScanner = GoogleMlKit.vision.barcodeScanner();
-      final visionImage = InputImage.fromFilePath(pickedImage);
-      try {
-        var barcodeText = await barCodeScanner.processImage(visionImage);
-
-        for (Barcode barcode in barcodeText) {
-          setState(() {
-            extractedBarcode = barcode.displayValue!;
-          });
-        }
-      } catch (e) {
-        debugPrint("Error 3");
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
+
+    final provider = Provider.of<CaptureImageThenScanProvider>(context, listen: true);
     return Scaffold(
       body: SafeArea(
           child: Padding(
@@ -60,10 +27,10 @@ class _CaptureThenScanState extends State<CaptureThenScan> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            selectedImagePath == ''
+            provider.selectedImagePath == ''
                 ? const Center(child: Text("Select an image from Gallery / camera"))
                 : Image.file(
-                    File(selectedImagePath),
+                    File(provider.selectedImagePath),
                     height: 400,
                     width: 200,
                   ),
@@ -75,13 +42,13 @@ class _CaptureThenScanState extends State<CaptureThenScan> {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          getImage(ImageSource.gallery);
+                          provider.getImage(ImageSource.gallery);
                         },
                         child: const Text('Pick Image'),
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          getImage(ImageSource.camera);
+                          provider.getImage(ImageSource.camera);
                         },
                         child: const Text('Camera Capture'),
                       ),
@@ -94,14 +61,14 @@ class _CaptureThenScanState extends State<CaptureThenScan> {
                 Expanded(
                   child: ElevatedButton(
                       onPressed: () {
-                        recognizedText(selectedImagePath);
+                        provider.recognizedText(provider.selectedImagePath);
                       },
                       child: const Text('Scan')),
                 ),
               ],
             ),
             SizedBox(height: 30),
-            extractedBarcode.isEmpty ? Text("No data found in barcode") : Text(extractedBarcode)
+            provider.extractedBarcode.isEmpty ? Text("No data found in barcode") : Text(provider.extractedBarcode)
           ],
         ),
       )),

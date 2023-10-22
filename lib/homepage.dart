@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'image_scan.dart';
+import 'capture_image_then_scan/capture_image_then_scan.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
