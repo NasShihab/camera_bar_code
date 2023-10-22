@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'capture_image_then_scan/capture_image_then_scan.dart';
+import 'crop_image.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -24,6 +25,7 @@ class HomePage extends StatelessWidget {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const CropImage()));
                   },
                   child: const Text("Crop Capture Then Scan"),
                 ),
