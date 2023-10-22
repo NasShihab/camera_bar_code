@@ -50,6 +50,7 @@ class _CropImageState extends State<CropImage> {
       if (cropped != null) {
         setState(() {
           imageFile = File(cropped.path);
+          selectedImagePath = cropped.path;
         });
       }
     }
@@ -69,7 +70,8 @@ class _CropImageState extends State<CropImage> {
 
         for (Barcode barcode in barcodeText) {
           setState(() {
-            extractedBarcode = barcode.displayValue!;
+            // extractedBarcode = barcode.displayValue!;
+            extractedBarcode += "${barcode.displayValue!}\n";
           });
         }
       } catch (e) {
