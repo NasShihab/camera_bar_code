@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'capture_image_then_scan/provider_capture_image_then_scan.dart';
 import 'homepage.dart';
 
 void main() {
@@ -20,7 +18,6 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => CaptureImageThenScanProvider()),
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
