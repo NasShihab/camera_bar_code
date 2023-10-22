@@ -31,13 +31,13 @@ class _CropImageState extends State<CropImage> {
   Future cropImage() async {
     if (imageFile != null) {
       CroppedFile? cropped = await ImageCropper().cropImage(sourcePath: imageFile!.path, aspectRatioPresets: [
-        CropAspectRatioPreset.square,
+        // CropAspectRatioPreset.square,
         CropAspectRatioPreset.ratio3x2,
-        CropAspectRatioPreset.original,
-        CropAspectRatioPreset.ratio4x3,
-        CropAspectRatioPreset.ratio16x9,
-        CropAspectRatioPreset.ratio5x3,
-        CropAspectRatioPreset.ratio7x5,
+        // CropAspectRatioPreset.original,
+        // CropAspectRatioPreset.ratio4x3,
+        // CropAspectRatioPreset.ratio16x9,
+        // CropAspectRatioPreset.ratio5x3,
+        // CropAspectRatioPreset.ratio7x5,
       ], uiSettings: [
         AndroidUiSettings(
             toolbarTitle: 'Crop',
