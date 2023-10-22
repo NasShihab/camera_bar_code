@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'camera_ratio.dart';
 import 'capture_image_then_scan/capture_image_then_scan.dart';
 import 'crop_image.dart';
 
@@ -21,6 +22,14 @@ class HomePage extends StatelessWidget {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const CaptureThenScan()));
                   },
                   child: const Text("Capture Then Scan"),
+                ),
+              ),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const CameraApp()));
+                  },
+                  child: const Text("Camera"),
                 ),
               ),
               Center(

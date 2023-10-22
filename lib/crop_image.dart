@@ -74,6 +74,18 @@ class _CropImageState extends State<CropImage> {
             extractedBarcode += "${barcode.displayValue!}\n";
           });
         }
+        // if (barcodeText.isEmpty) {
+        //   debugPrint("No barcodes found in the image");
+        // }
+        // else {
+        //   for (Barcode barcode in barcodeText) {
+        //     if (barcode.displayValue != null && barcode.displayValue!.length == 26) {
+        //       setState(() {
+        //         extractedBarcode = barcode.displayValue!;
+        //       });
+        //     }
+        //   }
+        // }
       } catch (e) {
         debugPrint("Error");
       }
