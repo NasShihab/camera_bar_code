@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'capture_image_then_scan/capture_image_then_scan.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,6 +19,13 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const CaptureThenScan()));
                   },
                   child: const Text("Capture Then Scan"),
+                ),
+              ),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                  },
+                  child: const Text("Crop Capture Then Scan"),
                 ),
               ),
             ],
