@@ -1,6 +1,5 @@
-
 import 'package:flutter/material.dart';
-import 'camera_ratio.dart';
+import 'camera_overlay.dart';
 import 'capture_image_then_scan/capture_image_then_scan.dart';
 import 'crop_image.dart';
 
@@ -27,9 +26,9 @@ class HomePage extends StatelessWidget {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const CameraApp()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const CameraScreen()));
                   },
-                  child: const Text("Camera"),
+                  child: const Text("Camera Overlay"),
                 ),
               ),
               Center(
