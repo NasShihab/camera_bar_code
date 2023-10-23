@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:image/image.dart' as img;
@@ -23,7 +22,7 @@ class CameraScreenState extends State<CameraScreen> {
 
   Future<void> setupCamera() async {
     final cameras = await availableCameras();
-    controller = CameraController(cameras[0], ResolutionPreset.high);
+    controller = CameraController(cameras[0], ResolutionPreset.ultraHigh); // Adjust the resolution accordingly
     await controller!.initialize();
     if (!mounted) {
       return;
@@ -58,15 +57,18 @@ class CameraScreenState extends State<CameraScreen> {
     final file = File(imagePath);
     final image = img.decodeImage(await file.readAsBytes())!;
 
-    const overlayWidth = 600;
-    const overlayHeight = 400;
-    final overlayX = (image.width - overlayWidth) ~/ 2;
-    final overlayY = (image.height - overlayHeight) ~/ 2 + 80;
+    final screenSize = MediaQuery.of(context).size;
+    final overlayWidth = screenSize.width * .9; // Adjust the percentage as needed
+    final overlayHeight = screenSize.height * 0.50; // Adjust the percentage as needed
+    final overlayX = (screenSize.width - overlayWidth) / 2;
+    final overlayY = (screenSize.height - overlayHeight) / 2;
 
-    final startX = overlayX.clamp(0, image.width - overlayWidth);
-    final startY = overlayY.clamp(0, image.height - overlayHeight);
+    final startX = overlayX.clamp(0, image.width - overlayWidth).toInt();
+    final startY = overlayY.clamp(0, image.height - overlayHeight).toInt();
+    final cropWidth = overlayWidth.toInt();
+    final cropHeight = overlayHeight.toInt();
 
-    final croppedImage = img.copyCrop(image, x: startX, y: startY, width: overlayWidth, height: overlayHeight);
+    final croppedImage = img.copyCrop(image, x: startX, y: startY, width: cropWidth, height: cropHeight);
 
     final croppedImagePath = imagePath.replaceFirst('.jpg', '_cropped.jpg');
     File(croppedImagePath).writeAsBytesSync(img.encodeJpg(croppedImage));
@@ -79,6 +81,8 @@ class CameraScreenState extends State<CameraScreen> {
       return const Center(child: CircularProgressIndicator());
     }
 
+    final screenSize = MediaQuery.of(context).size;
+
     return Stack(
       children: <Widget>[
         CameraPreview(controller!),
@@ -88,8 +92,8 @@ class CameraScreenState extends State<CameraScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  width: 300,
-                  height: 200,
+                  width: screenSize.width * 0.90, // Adjust the percentage as needed
+                  height: screenSize.height * 0.25, // Adjust the percentage as needed
                   decoration: BoxDecoration(
                     border: Border.all(
                       color: Colors.green,
@@ -109,12 +113,6 @@ class CameraScreenState extends State<CameraScreen> {
           )
         else
           const SizedBox.shrink()
-        // Center(
-        //   child: Image.file(
-        //     File(capturedImage!.path),
-        //     fit: BoxFit.cover,
-        //   ),
-        // ),
       ],
     );
   }
@@ -123,7 +121,7 @@ class CameraScreenState extends State<CameraScreen> {
 class DisplayCapturedImage extends StatefulWidget {
   final String imagePath;
 
-  const DisplayCapturedImage({super.key, required this.imagePath});
+  const DisplayCapturedImage({Key? key, required this.imagePath}) : super(key: key);
 
   @override
   DisplayCapturedImageState createState() => DisplayCapturedImageState();
