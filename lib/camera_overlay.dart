@@ -39,40 +39,18 @@ class CameraScreenState extends State<CameraScreen> {
   Future<void> _captureCard() async {
     try {
       final image = await controller!.takePicture();
-      final croppedImage = await cropImage(image.path);
-      setState(() {
-        capturedImage = XFile(croppedImage);
-      });
-      Navigator.of(context).push(
+      // final croppedImage = await cropImage(image.path);
+      // setState(() {
+      //   capturedImage = XFile(croppedImage);
+      // });
+      Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => DisplayCapturedImage(imagePath: croppedImage),
+          builder: (context) => DisplayCapturedImage(imagePath: image.path),
         ),
       );
     } catch (e) {
       debugPrint('Error capturing image: $e');
     }
-  }
-
-  Future<String> cropImage(String imagePath) async {
-    final file = File(imagePath);
-    final image = img.decodeImage(await file.readAsBytes())!;
-
-    final screenSize = MediaQuery.of(context).size;
-    final overlayWidth = screenSize.width * .9; // Adjust the percentage as needed
-    final overlayHeight = screenSize.height * 0.50; // Adjust the percentage as needed
-    final overlayX = (screenSize.width - overlayWidth) / 2;
-    final overlayY = (screenSize.height - overlayHeight) / 2;
-
-    final startX = overlayX.clamp(0, image.width - overlayWidth).toInt();
-    final startY = overlayY.clamp(0, image.height - overlayHeight).toInt();
-    final cropWidth = overlayWidth.toInt();
-    final cropHeight = overlayHeight.toInt();
-
-    final croppedImage = img.copyCrop(image, x: startX, y: startY, width: cropWidth, height: cropHeight);
-
-    final croppedImagePath = imagePath.replaceFirst('.jpg', '_cropped.jpg');
-    File(croppedImagePath).writeAsBytesSync(img.encodeJpg(croppedImage));
-    return croppedImagePath;
   }
 
   @override
@@ -84,16 +62,18 @@ class CameraScreenState extends State<CameraScreen> {
     final screenSize = MediaQuery.of(context).size;
 
     return Stack(
-      children: <Widget>[
+      children: [
         CameraPreview(controller!),
         if (capturedImage == null)
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
+              children: [
+                const Center(child: Text('দয়াকরে কার্ডটি ফ্রেমের ভিতরে রাখুন', style: TextStyle(fontSize: 16, color: Colors.yellow),textAlign: TextAlign.center,)),
+                const SizedBox(height: 20,),
                 Container(
-                  width: screenSize.width * 0.90, // Adjust the percentage as needed
-                  height: screenSize.height * 0.25, // Adjust the percentage as needed
+                  width: screenSize.width * 0.90,
+                  height: screenSize.height * 0.25,
                   decoration: BoxDecoration(
                     border: Border.all(
                       color: Colors.green,
