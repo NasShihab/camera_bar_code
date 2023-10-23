@@ -4,15 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:image/image.dart' as img;
 
-
 class CameraScreen extends StatefulWidget {
   const CameraScreen({Key? key}) : super(key: key);
 
   @override
-  _CameraScreenState createState() => _CameraScreenState();
+  CameraScreenState createState() => CameraScreenState();
 }
 
-class _CameraScreenState extends State<CameraScreen> {
+class CameraScreenState extends State<CameraScreen> {
   CameraController? controller;
   XFile? capturedImage;
 
@@ -57,21 +56,19 @@ class _CameraScreenState extends State<CameraScreen> {
 
   Future<String> cropImage(String imagePath) async {
     final file = File(imagePath);
-    final image = img.decodeImage(await file.readAsBytes())!; // Load the image using the image package
-    const overlayWidth = 600; // Adjust based on your overlay size
-    const overlayHeight = 400;
-    // Define the exact dimensions and position of the overlay
-    final overlayX = (image.width - overlayWidth) ~/ 2; // Adjust based on overlay position
-    final overlayY = (image.height - overlayHeight) ~/ 2 +80; // Adjust based on overlay position
-    // Adjust based on your overlay size
+    final image = img.decodeImage(await file.readAsBytes())!;
 
-    // Ensure that the overlay stays within the image boundaries
+    const overlayWidth = 600;
+    const overlayHeight = 400;
+    final overlayX = (image.width - overlayWidth) ~/ 2;
+    final overlayY = (image.height - overlayHeight) ~/ 2 + 80;
+
     final startX = overlayX.clamp(0, image.width - overlayWidth);
     final startY = overlayY.clamp(0, image.height - overlayHeight);
 
     final croppedImage = img.copyCrop(image, x: startX, y: startY, width: overlayWidth, height: overlayHeight);
 
-    final croppedImagePath = imagePath.replaceFirst('.jpg', '_cropped.jpg'); // Change the file name if needed
+    final croppedImagePath = imagePath.replaceFirst('.jpg', '_cropped.jpg');
     File(croppedImagePath).writeAsBytesSync(img.encodeJpg(croppedImage));
     return croppedImagePath;
   }
@@ -112,12 +109,12 @@ class _CameraScreenState extends State<CameraScreen> {
           )
         else
           const SizedBox.shrink()
-          // Center(
-          //   child: Image.file(
-          //     File(capturedImage!.path),
-          //     fit: BoxFit.cover,
-          //   ),
-          // ),
+        // Center(
+        //   child: Image.file(
+        //     File(capturedImage!.path),
+        //     fit: BoxFit.cover,
+        //   ),
+        // ),
       ],
     );
   }
@@ -126,18 +123,18 @@ class _CameraScreenState extends State<CameraScreen> {
 class DisplayCapturedImage extends StatefulWidget {
   final String imagePath;
 
-  DisplayCapturedImage({required this.imagePath});
+  const DisplayCapturedImage({super.key, required this.imagePath});
 
   @override
-  _DisplayCapturedImageState createState() => _DisplayCapturedImageState();
+  DisplayCapturedImageState createState() => DisplayCapturedImageState();
 }
 
-class _DisplayCapturedImageState extends State<DisplayCapturedImage> {
+class DisplayCapturedImageState extends State<DisplayCapturedImage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cropped Image'),
+        title: const Text('Cropped Image'),
       ),
       body: Center(
         child: Image.file(
@@ -148,4 +145,3 @@ class _DisplayCapturedImageState extends State<DisplayCapturedImage> {
     );
   }
 }
-
