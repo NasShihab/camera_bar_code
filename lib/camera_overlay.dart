@@ -155,6 +155,12 @@ class DisplayCapturedImageState extends State<DisplayCapturedImage> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    recognizedText(widget.imagePath);
+  }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
