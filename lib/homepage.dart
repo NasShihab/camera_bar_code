@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'camera_overlay.dart';
 import 'capture_image_then_scan/capture_image_then_scan.dart';
 import 'crop_image.dart';
+import 'get_location.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -44,7 +45,6 @@ class _HomePageState extends State<HomePage> {
     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
     return androidInfo;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -99,6 +99,14 @@ class _HomePageState extends State<HomePage> {
                   child: const Text("Device Info"),
                 ),
               ),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const GetLocationAddress()));
+                  },
+                  child: const Text("Get Location"),
+                ),
+              ),
             ],
           ),
         ),
@@ -117,7 +125,6 @@ class SecondClass extends StatefulWidget {
 }
 
 class _SecondClassState extends State<SecondClass> {
-
   String ipAddress = '';
 
   Future<void> getIpAddress() async {
@@ -125,8 +132,7 @@ class _SecondClassState extends State<SecondClass> {
       final interfaces = await NetworkInterface.list();
       for (var interface in interfaces) {
         for (var address in interface.addresses) {
-          if (address.type == InternetAddressType.IPv4 &&
-              !address.address.startsWith('127.')) {
+          if (address.type == InternetAddressType.IPv4 && !address.address.startsWith('127.')) {
             setState(() {
               ipAddress = address.address;
             });
@@ -138,6 +144,7 @@ class _SecondClassState extends State<SecondClass> {
       print('Error fetching IP address: $e');
     }
   }
+
   @override
   void initState() {
     super.initState();

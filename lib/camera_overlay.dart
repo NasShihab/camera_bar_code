@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
-import 'package:image/image.dart' as img;
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({Key? key}) : super(key: key);
@@ -37,7 +36,7 @@ class CameraScreenState extends State<CameraScreen> {
     super.dispose();
   }
 
-  Future<void> _captureCard() async {
+  Future<void> captureCard() async {
     try {
       final image = await controller!.takePicture();
       // final croppedImage = await cropImage(image.path);
@@ -92,7 +91,7 @@ class CameraScreenState extends State<CameraScreen> {
                 const SizedBox(height: 50),
                 FloatingActionButton(
                   onPressed: () {
-                    _captureCard();
+                    captureCard();
                   },
                   child: const Icon(Icons.camera),
                 ),
