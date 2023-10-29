@@ -11,20 +11,20 @@ class GetLocationAddress extends StatefulWidget {
 
 class _GetLocationAddressState extends State<GetLocationAddress> {
   String locationMessage = '';
-
-  void fetchLocation1() async {
-    // Check and request location permissions
-    var status = await Permission.location.status;
-    if (status.isDenied) {
-      await Permission.location.request();
-    }
-
-    if (status.isGranted) {
-      fetchLocation();
-    } else {
-      fetchLocation();
-    }
-  }
+  //
+  // void fetchLocation1() async {
+  //   // Check and request location permissions
+  //   var status = await Permission.location.status;
+  //   if (status.isDenied) {
+  //     await Permission.location.request();
+  //   }
+  //
+  //   if (status.isGranted) {
+  //     fetchLocation();
+  //   } else {
+  //     fetchLocation();
+  //   }
+  // }
 
   void fetchLocation() async {
     // Check and request location permissions
