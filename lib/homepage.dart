@@ -1,8 +1,8 @@
 import 'dart:io';
-
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'camera_overlay.dart';
 import 'capture_image_then_scan/capture_image_then_scan.dart';
 import 'crop_image.dart';
@@ -16,27 +16,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  Future<void> getDeviceInfo() async {
-    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-    if (Platform.isAndroid) {
-      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-      debugPrint('Device Name: ${androidInfo.device}');
-      debugPrint('Model: ${androidInfo.model}');
-      debugPrint('System Version: ${androidInfo.version.release}');
-      debugPrint('serialNumber: ${androidInfo.serialNumber}');
-      debugPrint('hardware: ${androidInfo.hardware}');
-      debugPrint('id: ${androidInfo.id}');
-      debugPrint('isPhysicalDevice?: ${androidInfo.isPhysicalDevice}');
-      debugPrint('host: ${androidInfo.host}');
-      debugPrint('brand: ${androidInfo.brand}');
-      debugPrint('product: ${androidInfo.product}');
-
-      debugPrint(DateFormat('dd-MM-yyyy HH:mm:ss').format(DateTime.now()));
-    } else if (Platform.isIOS) {
-      IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-      debugPrint('Device Name: ${iosInfo.name}');
-      debugPrint('Model: ${iosInfo.utsname.machine}');
-      debugPrint('System Version: ${iosInfo.systemVersion}');
+  void getLocationPermission() async {
+    var status = await Permission.location.status;
+    if (status.isDenied) {
+      await Permission.location.request();
     }
   }
 
@@ -44,6 +27,13 @@ class _HomePageState extends State<HomePage> {
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
     return androidInfo;
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getLocationPermission();
   }
 
   @override
@@ -157,182 +147,31 @@ class _SecondClassState extends State<SecondClass> {
       appBar: AppBar(title: const Text('Device Info')),
       body: Center(
         child: SingleChildScrollView(
-            child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        const Text(
-                          'IP Address:',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                        ),
-                        Text(
-                          ipAddress,
-                          style: const TextStyle(fontSize: 18),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: <Widget>[
-                        const Text(
-                          'Device Name:',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                        ),
-                        Text(
-                          widget.androidInfo.device,
-                          style: const TextStyle(fontSize: 18),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: <Widget>[
-                        const Text(
-                          'Model:',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                        ),
-                        Text(
-                          widget.androidInfo.model,
-                          style: const TextStyle(fontSize: 18),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: <Widget>[
-                        const Text(
-                          'System Version:',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                        ),
-                        Text(
-                          widget.androidInfo.version.release,
-                          style: const TextStyle(fontSize: 18),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: <Widget>[
-                        const Text(
-                          'Serial Number:',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                        ),
-                        Text(
-                          widget.androidInfo.serialNumber,
-                          style: const TextStyle(fontSize: 18),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: <Widget>[
-                        const Text(
-                          'Hardware:',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                        ),
-                        Text(
-                          widget.androidInfo.hardware,
-                          style: const TextStyle(fontSize: 18),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: <Widget>[
-                        const Text(
-                          'ID:',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                        ),
-                        Text(
-                          widget.androidInfo.id,
-                          style: const TextStyle(fontSize: 18),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: <Widget>[
-                        const Text(
-                          'Is Physical Device:',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                        ),
-                        Text(
-                          '${widget.androidInfo.isPhysicalDevice}',
-                          style: const TextStyle(fontSize: 18),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: <Widget>[
-                        const Text(
-                          'Host:',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                        ),
-                        Text(
-                          widget.androidInfo.host,
-                          style: const TextStyle(fontSize: 18),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: <Widget>[
-                        const Text(
-                          'Brand:',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                        ),
-                        Text(
-                          widget.androidInfo.brand,
-                          style: const TextStyle(fontSize: 18),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: <Widget>[
-                        const Text(
-                          'Product:',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                        ),
-                        Text(
-                          widget.androidInfo.product,
-                          style: const TextStyle(fontSize: 18),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: <Widget>[
-                        const Text(
-                          'Display:',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                        ),
-                        Text(
-                          widget.androidInfo.display,
-                          style: const TextStyle(fontSize: 18),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: <Widget>[
-                        const Text(
-                          'Device Time:',
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                        ),
-                        Text(
-                          DateFormat('dd-MM-yyyy HH:mm:ss').format(DateTime.now()),
-                          style: const TextStyle(fontSize: 18),
-                        ),
-                      ],
-                    ),
-                  ],
-                ))),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'IP Address: $ipAddress, \n'
+                  'Device Name: ${widget.androidInfo.device}, \n'
+                  'Model: ${widget.androidInfo.model}, \n'
+                  'System Version: ${widget.androidInfo.version.release}, \n'
+                  'Hardware: ${widget.androidInfo.hardware}, \n'
+                  'ID: ${widget.androidInfo.id}, \n'
+                  'Is Physical Device: ${widget.androidInfo.isPhysicalDevice}, \n'
+                  'Host: ${widget.androidInfo.host}, \n'
+                  'Brand: ${widget.androidInfo.brand}, \n'
+                  'Product: ${widget.androidInfo.product}, \n'
+                  'Display: ${widget.androidInfo.display}, \n'
+                  'Device Time: ${DateFormat('dd-MM-yyyy HH:mm:ss').format(DateTime.now())}, ',
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
