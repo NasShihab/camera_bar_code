@@ -7,6 +7,7 @@ import 'camera_overlay.dart';
 import 'capture_image_then_scan/capture_image_then_scan.dart';
 import 'crop_image.dart';
 import 'get_location.dart';
+import 'newQrCode.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -94,6 +95,14 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const GetLocationAddress()));
                   },
                   child: const Text("Get Location"),
+                ),
+              ),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const MyHomePage()));
+                  },
+                  child: const Text("New QR"),
                 ),
               ),
             ],
