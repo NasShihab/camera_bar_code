@@ -22,7 +22,7 @@ class MyHomePageState extends State<MyHomePage> {
     _controller = ScanController();
   }
 
-  Future<void> _pickImage() async {
+  Future<void> pickImage() async {
     final ImagePicker picker = ImagePicker();
     XFile? image = await picker.pickImage(source: ImageSource.camera);
 
@@ -32,7 +32,17 @@ class MyHomePageState extends State<MyHomePage> {
       setState(() {
         _barcodeResult = barcodeResult!;
       });
-      Navigator.push(context, MaterialPageRoute(builder: (context) => NextPage(barcode: _barcodeResult, imagePath: image.path,)));
+      Future.delayed(const Duration(milliseconds: 1), () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => NextPage(
+              barcode: _barcodeResult,
+              imagePath: image.path,
+            ),
+          ),
+        );
+      });
     }
   }
 
@@ -51,7 +61,7 @@ class MyHomePageState extends State<MyHomePage> {
                 ScanView(controller: _controller),
                 Text(_barcodeResult),
                 ElevatedButton(
-                  onPressed: _pickImage,
+                  onPressed: pickImage,
                   child: const Text('Pick Image'),
                 ),
               ],
