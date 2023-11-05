@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:camera_bar_code/auto_crop.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -103,6 +104,14 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const MyHomePage()));
                   },
                   child: const Text("New QR"),
+                ),
+              ),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const AutoCrop()));
+                  },
+                  child: const Text("AutoCrop"),
                 ),
               ),
             ],
