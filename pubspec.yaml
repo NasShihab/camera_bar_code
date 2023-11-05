@@ -46,6 +46,7 @@ dependencies:
   geolocator: ^10.1.0
   # nas
   scan: ^1.6.0
+  path_provider: ^2.1.1
 
 
 dev_dependencies:

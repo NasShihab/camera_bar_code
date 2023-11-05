@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:camera_bar_code/auto_crop.dart';
+import 'package:camera_bar_code/camera_image_crop.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -109,7 +109,7 @@ class _HomePageState extends State<HomePage> {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const AutoCrop()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const CameraImageCrop()));
                   },
                   child: const Text("AutoCrop"),
                 ),
