@@ -26,7 +26,7 @@ class CameraImageCropState extends State<CameraImageCrop> {
 
       // Calculate the crop parameters
       var cropSize = imageBytes.width > imageBytes.height ? imageBytes.height : imageBytes.width;
-      int offsetX = (imageBytes.width - cropSize) ~/ 20;
+      int offsetX = (imageBytes.width - cropSize) ~/ -80;
       int offsetY = (imageBytes.height - cropSize) ~/ 20;
 
       // Get the documents directory for saving the cropped image
