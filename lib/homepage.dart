@@ -1,7 +1,11 @@
 import 'dart:io';
+import 'package:camera/camera.dart';
 import 'package:camera_bar_code/camera_image_crop.dart';
+import 'package:camera_bar_code/camera_overlay_new/camera_overlay_new.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_camera_overlay_new/flutter_camera_overlay.dart';
+import 'package:flutter_camera_overlay_new/model.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'camera_overlay.dart';
@@ -18,6 +22,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+
   void getLocationPermission() async {
     var status = await Permission.location.status;
     if (status.isDenied) {
@@ -31,10 +37,12 @@ class _HomePageState extends State<HomePage> {
     return androidInfo;
   }
 
+
   @override
   void initState() {
     super.initState();
     getLocationPermission();
+
   }
 
   @override
@@ -112,6 +120,15 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const CameraImageCrop()));
                   },
                   child: const Text("AutoCrop"),
+                ),
+              ),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const CameraOverLayNew()));
+
+                  },
+                  child: const Text("Camera Overlay New"),
                 ),
               ),
             ],

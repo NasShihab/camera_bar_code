@@ -198,6 +198,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_camera_overlay_new:
+    dependency: "direct main"
+    description:
+      name: flutter_camera_overlay_new
+      sha256: e7bdf4724c2355331c89dbb390c429fdf8307aef168ff1c9a8c9e0ed401e0f2f
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.1"
   flutter_lints:
     dependency: "direct dev"
     description:

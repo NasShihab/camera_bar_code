@@ -16,8 +16,9 @@ class ViewImageScreen extends StatelessWidget {
       body: Center(
         child: Image.file(
           imageFile,
-          width: 200, // Adjust width as needed
-          height: 200, // Adjust height as needed
+          width: 200,
+          height: 200,
+          fit: BoxFit.cover,
         ),
       ),
     );

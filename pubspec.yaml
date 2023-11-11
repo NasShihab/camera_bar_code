@@ -47,6 +47,7 @@ dependencies:
   # nas
   scan: ^1.6.0
   path_provider: ^2.1.1
+  flutter_camera_overlay_new: ^0.0.1
 
 
 dev_dependencies:
