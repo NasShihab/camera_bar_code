@@ -1,7 +1,18 @@
 import 'dart:io';
-import 'package:camera_bar_code/qr_code_scan.dart';
+import 'package:camera/camera.dart';
+import 'package:camera_bar_code/camera_image_crop.dart';
+import 'package:camera_bar_code/camera_overlay_new/camera_overlay_new.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:flutter_camera_overlay_new/flutter_camera_overlay.dart';
+import 'package:flutter_camera_overlay_new/model.dart';
+import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'camera_overlay.dart';
+import 'capture_image_then_scan/capture_image_then_scan.dart';
+import 'crop_image.dart';
+import 'get_location.dart';
+import 'newQrCode.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,17 +22,27 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  File? _pickedImage;
 
-  Future<void> _pickImageFromCamera() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.camera);
 
-    if (pickedFile != null) {
-      setState(() {
-        _pickedImage = File(pickedFile.path);
-      });
+  void getLocationPermission() async {
+    var status = await Permission.location.status;
+    if (status.isDenied) {
+      await Permission.location.request();
     }
+  }
+
+  Future<AndroidDeviceInfo> getDeviceInfo2() async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    return androidInfo;
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    getLocationPermission();
+
   }
 
   @override
@@ -29,35 +50,160 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 25),
+          padding: const EdgeInsets.symmetric(horizontal: 25),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              if (_pickedImage != null)
-                Image.file(
-                  _pickedImage!,
-                ),
               Center(
                 child: ElevatedButton(
-                  onPressed: _pickImageFromCamera,
-                  child: const Text("Pick Image from Camera"),
-                ),
-              ),
-              Center(
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: const Text("2nd"),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const CaptureThenScan()));
+                  },
+                  child: const Text("Capture Then Scan"),
                 ),
               ),
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const QQrCodeScanView()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const CameraScreen()));
                   },
-                  child: const Text("3rd"),
+                  child: const Text("Camera Overlay"),
+                ),
+              ),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const CropImage()));
+                  },
+                  child: const Text("Crop Capture Then Scan"),
+                ),
+              ),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () async {
+                    // getDeviceInfo();
+                    AndroidDeviceInfo androidInfo;
+                    BuildContext currentContext = context;
+                    getDeviceInfo2().then((androidInfo) {
+                      androidInfo = androidInfo;
+                      Navigator.push(
+                        currentContext, // Use the captured context
+                        MaterialPageRoute(
+                          builder: (context) => SecondClass(androidInfo: androidInfo),
+                        ),
+                      );
+                      debugPrint(androidInfo.host);
+                    });
+                  },
+                  child: const Text("Device Info"),
+                ),
+              ),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const GetLocationAddress()));
+                  },
+                  child: const Text("Get Location"),
+                ),
+              ),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const MyHomePage()));
+                  },
+                  child: const Text("New QR"),
+                ),
+              ),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const CameraImageCrop()));
+                  },
+                  child: const Text("AutoCrop"),
+                ),
+              ),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const CameraOverLayNew()));
+
+                  },
+                  child: const Text("Camera Overlay New"),
                 ),
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class SecondClass extends StatefulWidget {
+  final AndroidDeviceInfo androidInfo;
+
+  const SecondClass({super.key, required this.androidInfo});
+
+  @override
+  State<SecondClass> createState() => _SecondClassState();
+}
+
+class _SecondClassState extends State<SecondClass> {
+  String ipAddress = '';
+
+  Future<void> getIpAddress() async {
+    try {
+      final interfaces = await NetworkInterface.list();
+      for (var interface in interfaces) {
+        for (var address in interface.addresses) {
+          if (address.type == InternetAddressType.IPv4 && !address.address.startsWith('127.')) {
+            setState(() {
+              ipAddress = address.address;
+            });
+            return;
+          }
+        }
+      }
+    } catch (e) {
+      print('Error fetching IP address: $e');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getIpAddress();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Device Info')),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  'IP Address: $ipAddress, \n'
+                  'Device Name: ${widget.androidInfo.device}, \n'
+                  'Model: ${widget.androidInfo.model}, \n'
+                  'System Version: ${widget.androidInfo.version.release}, \n'
+                  'Hardware: ${widget.androidInfo.hardware}, \n'
+                  'ID: ${widget.androidInfo.id}, \n'
+                  'Is Physical Device: ${widget.androidInfo.isPhysicalDevice}, \n'
+                  'Host: ${widget.androidInfo.host}, \n'
+                  'Brand: ${widget.androidInfo.brand}, \n'
+                  'Product: ${widget.androidInfo.product}, \n'
+                  'Display: ${widget.androidInfo.display}, \n'
+                  'Device Time: ${DateFormat('dd-MM-yyyy HH:mm:ss').format(DateTime.now())}, ',
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ],
+            ),
           ),
         ),
       ),
