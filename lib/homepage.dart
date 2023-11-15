@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:camera/camera.dart';
+import 'package:camera_bar_code/animation_cross_fade/animated_cross_fade.dart';
 import 'package:camera_bar_code/camera_image_crop.dart';
 import 'package:camera_bar_code/camera_overlay_new/camera_overlay_new.dart';
 import 'package:device_info_plus/device_info_plus.dart';
@@ -22,8 +23,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
-
   void getLocationPermission() async {
     var status = await Permission.location.status;
     if (status.isDenied) {
@@ -37,12 +36,10 @@ class _HomePageState extends State<HomePage> {
     return androidInfo;
   }
 
-
   @override
   void initState() {
     super.initState();
     getLocationPermission();
-
   }
 
   @override
@@ -126,9 +123,16 @@ class _HomePageState extends State<HomePage> {
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const CameraOverLayNew()));
-
                   },
                   child: const Text("Camera Overlay New"),
+                ),
+              ),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const AnimatedCrossFadeTest()));
+                  },
+                  child: const Text("Animated Cross Fade Test"),
                 ),
               ),
             ],
