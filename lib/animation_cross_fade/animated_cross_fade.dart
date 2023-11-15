@@ -65,7 +65,7 @@ class _AnimatedCrossFadeTestState extends State<AnimatedCrossFadeTest> {
                 firstCurve: Curves.linear,
                 secondCurve: Curves.linearToEaseOut,
                 crossFadeState: selectedIndex == 1 ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-                duration: const Duration(seconds: 1)),
+                duration: const Duration(microseconds: 900)),
             // const Chip(
             //   label: Text('Text 1'),
             //   backgroundColor: Colors.green,
