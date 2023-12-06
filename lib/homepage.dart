@@ -13,6 +13,7 @@ import 'camera_overlay.dart';
 import 'capture_image_then_scan/capture_image_then_scan.dart';
 import 'crop_image.dart';
 import 'get_location.dart';
+import 'get_serial/get_serial.dart';
 import 'newQrCode.dart';
 
 class HomePage extends StatefulWidget {
@@ -101,6 +102,15 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const GetLocationAddress()));
                   },
                   child: const Text("Get Location"),
+                ),
+              ),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const GetSerial()));
+                  },
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.purple),
+                  child: const Text("Get Serial Device"),
                 ),
               ),
               Center(
